@@ -2,6 +2,8 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { handleFileUpload, uploadMiddleware } from "./routes/upload";
+import { searchClinics } from "./routes/clinics";
 
 export function createServer() {
   const app = express();
