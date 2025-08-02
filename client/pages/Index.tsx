@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload, FileText, DollarSign, MapPin, Star } from "lucide-react";
@@ -34,7 +40,7 @@ export default function Index() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFileUpload(e.dataTransfer.files[0]);
     }
@@ -46,10 +52,10 @@ export default function Index() {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
+      const response = await fetch("/api/upload", {
+        method: "POST",
         body: formData,
       });
 
@@ -58,22 +64,22 @@ export default function Index() {
       if (data.success) {
         setExtractedItems(data.extractedItems);
       } else {
-        console.error('Upload failed:', data.error);
+        console.error("Upload failed:", data.error);
         // Fallback to mock data for demo
         const mockExtractedItems: ExtractedItem[] = [
           { procedure: "Blood Test - Complete Blood Count (CBC)", price: 45 },
           { procedure: "Lipid Panel", price: 65 },
-          { procedure: "Thyroid Function Test", price: 85 }
+          { procedure: "Thyroid Function Test", price: 85 },
         ];
         setExtractedItems(mockExtractedItems);
       }
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error("Upload error:", error);
       // Fallback to mock data for demo
       const mockExtractedItems: ExtractedItem[] = [
         { procedure: "Blood Test - Complete Blood Count (CBC)", price: 45 },
         { procedure: "Lipid Panel", price: 65 },
-        { procedure: "Thyroid Function Test", price: 85 }
+        { procedure: "Thyroid Function Test", price: 85 },
       ];
       setExtractedItems(mockExtractedItems);
     } finally {
@@ -89,10 +95,13 @@ export default function Index() {
 
   const addManualItem = () => {
     if (manualProcedure && manualPrice) {
-      setExtractedItems([...extractedItems, {
-        procedure: manualProcedure,
-        price: parseFloat(manualPrice)
-      }]);
+      setExtractedItems([
+        ...extractedItems,
+        {
+          procedure: manualProcedure,
+          price: parseFloat(manualPrice),
+        },
+      ]);
       setManualProcedure("");
       setManualPrice("");
     }
@@ -111,9 +120,21 @@ export default function Index() {
               <h1 className="text-2xl font-bold text-gray-900">HealthRate</h1>
             </div>
             <nav className="hidden md:flex items-center space-x-6">
-              <a href="#how-it-works" className="text-gray-600 hover:text-primary transition-colors">How it works</a>
-              <a href="#clinics" className="text-gray-600 hover:text-primary transition-colors">Find Clinics</a>
-              <Button variant="outline" size="sm">Sign In</Button>
+              <a
+                href="#how-it-works"
+                className="text-gray-600 hover:text-primary transition-colors"
+              >
+                How it works
+              </a>
+              <a
+                href="#clinics"
+                className="text-gray-600 hover:text-primary transition-colors"
+              >
+                Find Clinics
+              </a>
+              <Button variant="outline" size="sm">
+                Sign In
+              </Button>
             </nav>
           </div>
         </div>
@@ -127,8 +148,8 @@ export default function Index() {
             <span className="text-primary block">Find Better Deals</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Upload your medical bill and instantly compare prices with nearby clinics. 
-            Save money on healthcare with transparent pricing.
+            Upload your medical bill and instantly compare prices with nearby
+            clinics. Save money on healthcare with transparent pricing.
           </p>
         </div>
 
@@ -141,21 +162,24 @@ export default function Index() {
                 Upload Medical Bill
               </CardTitle>
               <CardDescription>
-                Upload a PDF or image of your medical bill for automatic extraction
+                Upload a PDF or image of your medical bill for automatic
+                extraction
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div
                 className={cn(
                   "relative p-8 border-2 border-dashed rounded-lg transition-colors cursor-pointer",
-                  dragActive ? "border-primary bg-primary/5" : "border-gray-300 hover:border-primary/50",
-                  isProcessing && "pointer-events-none opacity-50"
+                  dragActive
+                    ? "border-primary bg-primary/5"
+                    : "border-gray-300 hover:border-primary/50",
+                  isProcessing && "pointer-events-none opacity-50",
                 )}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById('file-input')?.click()}
+                onClick={() => document.getElementById("file-input")?.click()}
               >
                 <input
                   id="file-input"
@@ -173,14 +197,22 @@ export default function Index() {
                   ) : uploadedFile ? (
                     <div className="flex flex-col items-center">
                       <FileText className="w-12 h-12 text-primary mb-4" />
-                      <p className="text-sm font-medium text-gray-900">{uploadedFile.name}</p>
-                      <p className="text-xs text-gray-500 mt-1">Click to upload a different file</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {uploadedFile.name}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Click to upload a different file
+                      </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center">
                       <Upload className="w-12 h-12 text-gray-400 mb-4" />
-                      <p className="text-gray-600 mb-2">Drop your medical bill here or click to browse</p>
-                      <p className="text-xs text-gray-500">Supports PDF, JPG, PNG files</p>
+                      <p className="text-gray-600 mb-2">
+                        Drop your medical bill here or click to browse
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Supports PDF, JPG, PNG files
+                      </p>
                     </div>
                   )}
                 </div>
@@ -219,7 +251,7 @@ export default function Index() {
                   onChange={(e) => setManualPrice(e.target.value)}
                 />
               </div>
-              <Button 
+              <Button
                 onClick={addManualItem}
                 className="w-full"
                 disabled={!manualProcedure || !manualPrice}
@@ -242,12 +274,21 @@ export default function Index() {
             <CardContent>
               <div className="space-y-3">
                 {extractedItems.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                  >
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">{item.procedure}</h4>
-                      <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
+                      <h4 className="font-medium text-gray-900">
+                        {item.procedure}
+                      </h4>
+                      <p className="text-2xl font-bold text-primary">
+                        ${item.price.toFixed(2)}
+                      </p>
                     </div>
-                    <Link to={`/results?procedure=${encodeURIComponent(item.procedure)}&price=${item.price}`}>
+                    <Link
+                      to={`/results?procedure=${encodeURIComponent(item.procedure)}&price=${item.price}`}
+                    >
                       <Button className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
                         Show Nearby Alternatives
@@ -263,7 +304,9 @@ export default function Index() {
         {/* How it works */}
         <section id="how-it-works" className="mt-20">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">How HealthRate Works</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">
+              How HealthRate Works
+            </h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Get transparent healthcare pricing in three simple steps
             </p>
@@ -273,22 +316,35 @@ export default function Index() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Upload className="w-8 h-8 text-primary" />
               </div>
-              <h4 className="text-xl font-semibold mb-2">1. Upload Your Bill</h4>
-              <p className="text-gray-600">Upload a photo or PDF of your medical bill and we'll extract the details automatically.</p>
+              <h4 className="text-xl font-semibold mb-2">
+                1. Upload Your Bill
+              </h4>
+              <p className="text-gray-600">
+                Upload a photo or PDF of your medical bill and we'll extract the
+                details automatically.
+              </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-8 h-8 text-primary" />
               </div>
-              <h4 className="text-xl font-semibold mb-2">2. Find Nearby Options</h4>
-              <p className="text-gray-600">We compare your procedure with prices from clinics and hospitals in your area.</p>
+              <h4 className="text-xl font-semibold mb-2">
+                2. Find Nearby Options
+              </h4>
+              <p className="text-gray-600">
+                We compare your procedure with prices from clinics and hospitals
+                in your area.
+              </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <DollarSign className="w-8 h-8 text-primary" />
               </div>
               <h4 className="text-xl font-semibold mb-2">3. Save Money</h4>
-              <p className="text-gray-600">See exactly where you can get the same procedure for less and book your appointment.</p>
+              <p className="text-gray-600">
+                See exactly where you can get the same procedure for less and
+                book your appointment.
+              </p>
             </div>
           </div>
         </section>
@@ -304,7 +360,9 @@ export default function Index() {
               </div>
               <span className="font-bold text-gray-900">HealthRate</span>
             </div>
-            <p className="text-gray-600 text-sm">© 2024 HealthRate. Making healthcare transparent.</p>
+            <p className="text-gray-600 text-sm">
+              © 2024 HealthRate. Making healthcare transparent.
+            </p>
           </div>
         </div>
       </footer>
