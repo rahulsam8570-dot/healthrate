@@ -43,17 +43,42 @@ export default function Index() {
   const handleFileUpload = async (file: File) => {
     setUploadedFile(file);
     setIsProcessing(true);
-    
-    // Mock OCR processing - in real app, this would call Azure Document Intelligence
-    setTimeout(() => {
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setExtractedItems(data.extractedItems);
+      } else {
+        console.error('Upload failed:', data.error);
+        // Fallback to mock data for demo
+        const mockExtractedItems: ExtractedItem[] = [
+          { procedure: "Blood Test - Complete Blood Count (CBC)", price: 45 },
+          { procedure: "Lipid Panel", price: 65 },
+          { procedure: "Thyroid Function Test", price: 85 }
+        ];
+        setExtractedItems(mockExtractedItems);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      // Fallback to mock data for demo
       const mockExtractedItems: ExtractedItem[] = [
         { procedure: "Blood Test - Complete Blood Count (CBC)", price: 45 },
         { procedure: "Lipid Panel", price: 65 },
         { procedure: "Thyroid Function Test", price: 85 }
       ];
       setExtractedItems(mockExtractedItems);
+    } finally {
       setIsProcessing(false);
-    }, 2000);
+    }
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
