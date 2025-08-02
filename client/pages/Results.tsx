@@ -93,12 +93,32 @@ export default function Results() {
   ];
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setClinics(mockClinics);
+    const fetchClinics = async () => {
+      try {
+        const response = await fetch(`/api/clinics/search?procedure=${encodeURIComponent(procedure)}&price=${userPrice}`);
+        const data = await response.json();
+
+        if (data.success) {
+          setClinics(data.clinics);
+        } else {
+          // Fallback to mock data
+          setClinics(mockClinics);
+        }
+      } catch (error) {
+        console.error('Failed to fetch clinics:', error);
+        // Fallback to mock data
+        setClinics(mockClinics);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (procedure && userPrice > 0) {
+      fetchClinics();
+    } else {
       setLoading(false);
-    }, 800);
-  }, []);
+    }
+  }, [procedure, userPrice]);
 
   const sortedClinics = [...clinics].sort((a, b) => {
     switch (sortBy) {
