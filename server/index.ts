@@ -21,5 +21,9 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // HealthRate API routes
+  app.post("/api/upload", uploadMiddleware, handleFileUpload);
+  app.get("/api/clinics/search", searchClinics);
+
   return app;
 }
